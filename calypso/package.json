@@ -4,7 +4,7 @@
   "description": "Users Project",
   "main": "dist/index.js",
   "scripts": {
-    "dev:start": "nodemon src/index.ts"
+    "dev:start": "nodemon src/index.js"
   },
   "author": {
     "name": "Maycon Rayone",
@@ -15,11 +15,13 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.3.0",
     "@grpc/proto-loader": "^0.6.1",
-    "typescript": "^4.2.4"
+    "bcryptjs": "^2.4.3",
+    "grpc": "^1.24.8",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.7",
+    "protobufjs": "^6.11.2"
   },
   "devDependencies": {
-    "@types/node": "^15.0.1",
-    "nodemon": "^2.0.7",
-    "ts-node": "^9.1.1"
+    "nodemon": "^2.0.7"
   }
 }
