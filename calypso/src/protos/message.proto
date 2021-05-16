@@ -5,6 +5,7 @@ service UserService {
   rpc getAll(GetAllUsers) returns (UsersResponse){};
   rpc registerUser(RegisterUserRequest) returns (UserResponse){};
   rpc loginUser(LoginUserRequest) returns (LoginResponse){};
+  rpc authorize(AuthorizeRequest) returns (UserResponse){}
 }
 
 message User {
@@ -26,6 +27,10 @@ message UserResponse {
 
 message UsersResponse {
   repeated User users = 1;
+}
+
+message AuthorizeRequest {
+  string token = 1;
 }
 
 message RegisterUserRequest {

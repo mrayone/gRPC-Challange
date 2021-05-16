@@ -1,5 +1,5 @@
-const authConfig = require('../config/authConfig');
-const { verify } = require('jsonwebtoken');
+const CalypsoProvider = require('../infra/providers/CalypsoProvider');
+
 module.exports = {
   async ensureAuthenticated(
     request,
@@ -14,16 +14,20 @@ module.exports = {
   
     const [, token] = authorization.split(' ');
     try {
-      const decoded = verify(token, authConfig.secret);
-      const { id } = decoded;
+      const userResponse = await new Promise((resolve, reject) => {
+        CalypsoProvider.authorize({token}, (err, resp) => {
+          if(err){
+            reject(err)
+          } else 
+            resolve(resp)
+        })
+      })
       
-      request.user = {
-        id,
-      };
+      request.user = userResponse.user
       
       return next();
-    } catch {
-      return response.json({error: 'Invalid JWT token'}, 401);
+    } catch(error) {
+      return response.status(401).json({error: error.details});
     }
   }
 }

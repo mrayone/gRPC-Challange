@@ -1,5 +1,8 @@
 const User = require('./models/UserSchema');
 const grpc = require('@grpc/grpc-js')
+const authConfig = require('./config/authConfig');
+const { verify } = require('jsonwebtoken');
+
 module.exports = {
   async getUserById(
     call,
@@ -14,10 +17,11 @@ module.exports = {
         details: `User not found`,
       });
 
-    user.id = user._id;
+    const userResponse = user.toObject()
+    userResponse.id = user._id;
 
     return callback(null, {
-      user: { ...user.toObject(), password: undefined },
+      user: { ...userResponse, password: undefined },
     });
   },
 
@@ -35,8 +39,8 @@ module.exports = {
     
 
     const list = user.map(element => {
-      element.id = element._id;
       const user = element.toObject();
+      user.id = element._id;
       return { ...user, password: undefined }
     })
 
@@ -85,4 +89,35 @@ module.exports = {
       token: User.generateToken(user),
     });
   },
+
+  async authorize(call, callback) {
+    {
+      const { token } = call.request;
+      try {
+        const decoded = verify(token, authConfig.secret);
+        const { id } = decoded;
+
+        const user = await User.findById(id);
+
+        if (!user)
+          return callback({
+            code: grpc.status.NOT_FOUND,
+            details: `User email or password is invalid`,
+          });
+
+        const userResponse = user.toObject();
+        userResponse.id = user._id;
+
+        return callback(null, {
+          user: { ...userResponse, password: undefined },
+        });
+
+      } catch {
+        return callback({
+            code: grpc.status.UNIMPLEMENTED,
+            details: `Invalid JWT token`,
+          });
+      }
+    }
+  }
 };

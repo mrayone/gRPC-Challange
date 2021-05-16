@@ -14,6 +14,7 @@ class PurchaseController {
       return response.json(purchases)
    }
    async show(request, response) { 
+     try {
       const { id: userId } =  request.user;
       const { id } = request.params;
 
@@ -27,6 +28,10 @@ class PurchaseController {
       })
 
       return response.json(purchase)
+     }
+     catch {
+      return response.status(404).json({ error: 'Purchase not found'});
+     }
    }
    async store (request, response) {
       const { title, description, price } =  request.body;
