@@ -64,7 +64,7 @@ module.exports = {
   },
 
   async loginUser(call, callback) {
-    console.log(call.request)
+    
     const { email, password } = call.request.user;
     const user = await User.findOne({ email });
     if (!user) {

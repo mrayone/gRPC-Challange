@@ -1,0 +1,22 @@
+{
+  "name": "kraken",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev:start": "nodemon src/index.js"
+  },
+  "author": {
+    "name": "Maycon Rayone",
+    "email": "maycon.rayone@gmail.com",
+    "url": "https://github.com/mrayone"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.3.2",
+    "@grpc/proto-loader": "^0.6.2",
+    "mongoose": "^5.12.9"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

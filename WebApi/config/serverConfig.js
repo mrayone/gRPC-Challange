@@ -1,3 +1,4 @@
 module.exports = {
-  "target": "localhost:3334"
+  targetCalypso: "localhost:3334",
+  targetKraken: "localhost:3335"
 }
